@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<div th:replace="base :: html"></div>
+<head>
+    <div th:replace="fragments/navbar:: nav"></div>
+    <style>
+        .mt-1r {
+            margin-top: 1rem;
+        }
+        .register-form {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h5 class="mt-1r">Register as new worker!</h5>
+
+    <form action="#" th:action="@{/register/worker}" method="post" class="register-form">
+        <div>
+            <label for="name">Name</label>
+            <input th:field="*{worker.name}" id="name">
+        </div>
+        <div>
+            <label for="profession">Profession</label>
+            <select id="profession" th:field="*{worker.profession}" class="browser-default">
+                <option value="" disabled selected>Select your profession</option>
+                <option value="doctor">Doctor</option>
+                <option value="nurse">Nurse</option>
+            </select>
+        </div>
+        <div>
+            <label for="username">Username</label>
+            <input th:field="*{userPassword.userName}" id="username">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input th:field="*{userPassword.encryptedPassword}" type="password" id="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<div th:replace="base :: html"></div>
+<head>
+    <div th:replace="fragments/navbar:: nav"></div>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <div class="row mt-3">
+        <h3 class="mr-auto">Workers</h3>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Profession</th>
+        </tr>
+        </thead>
+        <tbody th:each="worker : ${workers}" th:remove="tag">
+        <tr>
+            <th scope="row" th:text="${worker.id}"/>
+            <td th:text="${worker.name}"/>
+            <td th:text="${worker.profession}"/>
+<!--            <td>-->
+<!--                <a type="button" class="btn btn-outline-dark" th:href="${'/admin/workers/edit/'+worker.id}">Edit</a>-->
+<!--                <a type="button" class="btn btn-outline-dark" th:href="${'/admin/workers/'+worker.id+'/patients'}">View Patients</a>-->
+<!--            </td>-->
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

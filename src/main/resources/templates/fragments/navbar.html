@@ -1,0 +1,30 @@
+<nav>
+    <div class="nav-wrapper">
+        <a href="#" class="brand-logo" style="margin-left: 18px;">
+            iCARE
+        </a>
+
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li sec:authorize="hasAuthority('worker')">
+                <a href="/palette">Palette</a>
+            </li>
+            <li sec:authorize="hasAuthority('worker')">
+                <a href="/icare-board">iCARE Board</a>
+            </li>
+            <li sec:authorize="hasAuthority('worker')">
+                <a href="/patients">Patients</a>
+            </li>
+            <li sec:authorize="hasAuthority('worker')">
+                <a href="/patients/create">Add Patient</a>
+            </li>
+            <li sec:authorize="hasAuthority('admin')">
+                <a href="/workers">Workers</a>
+            </li>
+            <li sec:authorize="hasAuthority('admin')">
+                <a href="/workers/create">Add Worker</a>
+            </li>
+            <li><a class="waves-effect waves-light btn red" th:href="@{/logout}">Logout</a></li>
+
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<div th:replace="base :: html"></div>
+<head>
+    <title>Login</title>
+    <style>
+        .form-container {
+            margin-top: 10rem;
+        }
+
+        .form-group {
+            margin-top: 1rem;
+        }
+
+        .message {
+            background-color: #6495ed40;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 2px 6px;
+            margin-bottom: 40px;
+        }
+
+        .error-message {
+            color: crimson;
+        }
+
+        #login-container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            flex-direction: row;
+            align-items: center;
+            padding: 0% 0% 0% 10%;
+        }
+
+        #login-empty {
+            display: flex;
+            background: url([[@{/login-bg.jpeg}]]) no-repeat;
+            background-size: cover;
+            flex: 2;
+            height: 100%;
+        }
+
+        #login-form {
+            flex: 1;
+            padding-right: 5%;
+        }
+    </style>
+</head>
+<body>
+<div id="login-container">
+    <div id="login-form">
+
+        <h3>Login</h3>
+        <div class="alert alert-primary" role="alert" th:if="${msg}" th:text="${msg}"/>
+        <div class="alert danger" role="alert" th:if="${error}" th:text="${error}"/>
+
+        <form action="#" th:action="@{/login}" method="post">
+            <div>
+                <label for="username">Username</label>
+                <input id="username" type="text"  name='username'/>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input id="password" type="password"  name='password'/>
+            </div>
+            <div>
+                <button class="btn btn-primary btn-block btn-lg" name="submit" type="submit">Login</button>
+            </div>
+            <div>
+                <p>Create an account <a href="/register">here</a>.</p>
+            </div>
+        </form>
+    </div>
+    <div id="login-empty">
+
+    </div>
+
+</div>
+</body>
+</html>
+

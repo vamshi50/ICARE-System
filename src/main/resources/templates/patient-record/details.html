@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<div th:replace="base :: html"></div>
+<head>
+    <div th:replace="fragments/navbar:: nav"></div>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .heading {
+            font-size: 2rem;
+            font-weight: 500;
+            margin-right: 10px;
+        }
+
+        .card-outline {
+            border: 1px solid #d2d6de;
+            padding: 10px;
+            border-radius: 3px;
+            background-color: #fff;
+        }
+
+        .pad {
+            padding: 2px 20px;
+        }
+
+        .treatment-form {
+            margin: 10px 12px;
+            padding: 10px 20px;
+            margin-bottom: 30px;
+        }
+
+        .wrap {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .treatment-record {
+            margin: 10px;
+            min-width: 300px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card-panel pad">
+        <div class="row">
+            <span class="heading">Patient Details</span>
+            <a th:href="${'/patients/edit/'+patientRecord.id}" class="btn">Edit</a>
+        </div>
+        <table>
+            <tbody>
+            <tr>
+                <th>Name:</th>
+                <td th:text="${patientRecord.name}"></td>
+            </tr>
+            <tr>
+                <th>Date of Birth</th>
+                <td th:text="${#dates.format(patientRecord.dateOfBirth, 'dd-MMM-yyyy')}"></td>
+            </tr>
+            <tr>
+                <th>Height</th>
+                <td th:text="${patientRecord.height}"></td>
+            </tr>
+            <tr>
+                <th>Weight</th>
+                <td th:text="${patientRecord.weight}"></td>
+            </tr>
+            <tr>
+                <th>Blood Group</th>
+                <td th:text="${patientRecord.bloodGroup}"></td>
+            </tr>
+            <tr>
+                <th>Bed</th>
+                <td th:text="${patientRecord.bedId}"></td>
+            </tr>
+            <tr>
+                <th>Treatment Area</th>
+                <td th:text="${patientRecord.treatmentArea}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <h6>Address:</h6>
+        <p th:text="${patientRecord.address == null ||  patientRecord.address.isEmpty() ? '-' :patientRecord.address}"></p>
+        </br>
+        <hr>
+        <div class="row">
+            <span class="heading">Treatment Records</span>
+        </div>
+        <div class="card-outline treatment-form">
+            <h6>Create new record</h6>
+            <form action="#"
+                  th:action="@{/patients/{patientRecordId}/treatment-record(patientRecordId=${patientRecord.id})}"
+                  method="post" th:object="${treatmentRecord}"
+                  enctype="multipart/form-data">
+                <input type="hidden" th:field="*{patientRecord.id}" th:value="*{patientRecord.id}">
+                <div>
+                    <label for="description">Description</label>
+                    <textarea rows="4" class="materialize-textarea" th:field="*{description}" id="description"/>
+                </div>
+                <div>
+                    <label for="treatmentDate">Treatment Date</label>
+                    <input class="input-field" type="date" th:field="*{treatmentDate}" id="treatmentDate"/>
+                </div>
+                <input class="input-field" type="file" id="image" name="image" accept="image/*"/>
+                <div id="drug-list">
+                    <div class="row" th:each="drug, i : *{drugs}">
+                        <div class="input-field col s12">
+                            <select th:field="*{drugs[__${i.index}__].drug.id}" class="browser-select" id="drug-select">
+                                <option value="" selected>Choose drug</option>
+                                <option th:each="d : ${drugsData}" th:value="${d.id}"
+                                        th:text="${d.name}"></option>
+                            </select>
+                            <label for="drug-select">Choose Drug</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn" id="add-drug">Add Drug</button>
+                <button type="submit" class="btn">
+                    Add Treatment Record
+                </button>
+            </form>
+        </div>
+        <h5>Previous records</h5>
+        <div class="wrap">
+            <div th:each="treatmentRecord: ${treatmentRecords}" class="treatment-record col" style="max-width: 50%;">
+                <div class="card-outline">
+                    <span class="card-title" th:text="${treatmentRecord.treatmentId}"></span>
+                    <hr>
+                    <div class="card-content">
+                        <h6>
+                            Treatment Date:
+                        </h6>
+                        <p th:text="${#dates.format(treatmentRecord.treatmentDate, 'dd-MMM-yyyy')}"></p>
+                        <h6>
+                            Description:
+                        </h6>
+
+                        <p th:text="${treatmentRecord.description}"></p>
+
+                        <h6>Drugs prescribed:</h6>
+                        <ol>
+                            <div th:each="drug : ${treatmentRecord.drugs}" th:remove="tag">
+                                <li th:if="${drug.drug}" th:text="${drug.drug.name}"/>
+                            </div>
+                        </ol>
+                        <div th:each="doc : ${treatmentRecord.documents}" th:remove="tag">
+                            <img th:if="${files.get(doc.docId)}" th:src="@{/file/{fileName}(fileName=${files.get(doc.docId)})}" style="max-width: 100%;"/>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${treatmentRecords.empty}">
+            <p>No records available</p>
+        </div>
+
+    </div>
+</div>
+
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        const drugInput = (index) => '<input type="text" id="drug-id" name="drugs[' + index + '].drug" value="">';
+        // get all options from select tag
+        let options = $('#drug-list').find('select').html();
+        options = '<option value="" selected>Choose drug</option>' + options;
+        // add new drug input
+        const drugSelect = (index) => '<select name="drugs[' + index + '].drug" id="drug-select" class="browser-select" id="drug-select">' +
+            options +
+            '                                </select>';
+        const drugInputDiv = (index) => '<div class="row">' +
+            '<div class="input-field col s12">' +
+            drugSelect(index) +
+            '<label for="drug-id">Drug Name</label>' +
+            '</div>' +
+            '</div>'
+        console.log("hello")
+        $('#add-drug').click(function () {
+            const drugList = $('#drug-list')
+            const drugCount = drugList.children().length
+            drugList.append(drugInputDiv(drugCount))
+            $('select').formSelect();
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+
+    });
+</script>
+</html>

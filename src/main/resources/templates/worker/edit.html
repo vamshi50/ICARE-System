@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<div th:replace="base :: html"></div>
+<head>
+  <div th:replace="fragments/navbar:: nav"></div>
+  <style>
+    .mt-1r {
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h3 class="mt-1r">Update Worker!</h3>
+
+  <form action="#" th:action="@{/templates/worker}" method="post" th:object="${worker}">
+    <input type="hidden" th:field="*{id}"  id="id">
+    <div >
+      <div class="form-row">
+        <div class="col">
+          <label for="firstName">First Name</label>
+          <input th:field="*{firstName}"  id="firstName">
+        </div>
+        <div class="col">
+          <label for="lastName">Last name</label>
+          <input th:field="*{lastName}"  id="lastName">
+        </div>
+      </div>
+    </div>
+    <div >
+      <label for="dob">Date of Birth</label>
+      <input th:field="*{dob}" type="date"  id="dob">
+    </div>
+    <div >
+      <label for="email">Email address</label>
+      <input th:field="*{email}" type="email"  id="email" placeholder="Enter email">
+    </div>
+    <div >
+      <label for="role">Role</label>
+      <select th:field="*{role}"  id="role">
+        <option th:value="doctor" th:text="Doctor"></option>
+        <option th:value="nurse" th:text="Nurse"></option>
+      </select>
+    </div>
+    <div >
+      <label for="specialization">Specialization</label>
+      <input th:field="*{specialization}"  id="specialization">
+    </div>
+    <div >
+      <label for="room">Room Number</label>
+      <input th:field="*{room}"  id="room">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<div th:replace="base :: html"></div>
+<head>
+    <div th:replace="fragments/navbar:: nav"></div>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <div class="row mt-3">
+        <h3 class="mr-auto">Patient Records</h3>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">DOB</th>
+            <th scope="col">height / weight</th>
+            <th scope="col">Blood Group</th>
+            <th scope="col">Bed</th>
+            <th scope="col">Treatment Area</th>
+            <th scope="col">Manage</th>
+        </tr>
+        </thead>
+        <tbody th:each="patientRecord : ${patientRecords}" th:remove="tag">
+        <tr>
+            <th scope="row" th:text="${patientRecord.id}"/>
+            <td th:text="${patientRecord.name}"/>
+            <td th:text="${patientRecord.address}"/>
+            <td th:text="${#dates.format(patientRecord.dateOfBirth, 'dd-MM-yyyy')}"/>
+            <td th:text="${patientRecord.height}+' / ' +${patientRecord.weight}"/>
+            <td th:text="${patientRecord.bloodGroup}"/>
+            <td th:text="${patientRecord.bedId}"/>
+            <td th:text="${patientRecord.treatmentArea}"/>
+            <td>
+                <a type="button" class="btn btn-outline-dark" th:href="${'/patients/details/'+patientRecord.id}">Manage</a>
+                <form th:action="@{/patients/unassign}" method="post">
+                    <input type="hidden" th:name="patientId" th:value="${patientRecord.id}"/>
+                    <button type="submit" class="btn btn-link card-link">Unassign</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

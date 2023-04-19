@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<div th:replace="base :: html"></div>
+<head>
+    <div th:replace="fragments/navbar:: nav"></div>
+    <style>
+        .mt-1r {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 class="mt-1r">Add New Worker!</h3>
+
+    <form action="#" th:action="@{/workers}" method="post">
+        <div>
+            <label for="name">Name</label>
+            <input th:field="*{worker.name}"  id="name">
+        </div>
+        <div>
+            <label for="profession">Profession</label>
+            <input th:field="*{worker.profession}"  id="profession">
+        </div>
+        <div>
+            <label for="username">Username</label>
+            <input th:field="*{userPassword.userName}"  id="username">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input th:field="*{userPassword.encryptedPassword}" type="password"  id="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+</body>
+</html>

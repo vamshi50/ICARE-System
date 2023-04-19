@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<div th:replace="base :: html"></div>
+<head>
+    <div th:replace="fragments/navbar:: nav"></div>
+    <style>
+        .mt-1r {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 class="mt-1r">Edit Patient!</h3>
+
+    <form action="#" th:action="@{/patients}" method="post" th:object="${patientRecord}">
+        <input type="hidden" th:field="*{id}" th:value="*{id}">
+        <input type="hidden" th:field="*{worker.id}" th:value="*{worker.id}">
+
+        <div>
+            <label for="name">Name</label>
+            <input th:field="*{name}" id="name">
+        </div>
+        <div>
+            <label for="dob">Date of Birth</label>
+            <input th:field="*{dateOfBirth}" type="date" id="dob">
+        </div>
+        <div>
+            <label for="height">Height</label>
+            <input th:field="*{height}" id="height" placeholder="Enter height">
+        </div>
+        <div>
+            <label for="weight">Weight</label>
+            <input th:field="*{weight}" id="weight" placeholder="Enter weight">
+        </div>
+        <div>
+            <label for="bloodGroup">Blood Group</label>
+            <input th:field="*{bloodGroup}" id="bloodGroup">
+        </div>
+        <div>
+            <label for="bedId">Bed ID</label>
+            <input th:field="*{bedId}" id="bedId">
+        </div>
+        <div>
+            <label for="treatmentArea">Treatment Area</label>
+            <input th:field="*{treatmentArea}" id="treatmentArea">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+</body>
+</html>
